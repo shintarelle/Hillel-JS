@@ -2,22 +2,20 @@
 
 // exercise 2.1
 
-//alert('Я - зовнішнiй JavaScript!')
+alert('Я - зовнішнiй JavaScript!')
 
 // exercise 2.4
 
-// let admin;
-// let name;
-// name = 'Ivan';
-// admin = name;
-// alert(admin);
-
+let admin;
+let name;
+name = 'Ivan';
+admin = name;
+alert(admin);
 
 let ourPlanetName = 'Earth';
 let currentUserName = 'Ivan';
 console.log(ourPlanetName);
 console.log(currentUserName);
-
 
 const BIRTHDAY = '31.01.1986';
 let currentDate = '20.09.2022';
@@ -34,40 +32,40 @@ console.log(`Hello ${"teacher)"}`);
 console.log("-------------- 2.6 -----------------");
 
 // let test = prompt("Test", 'default');
-// let test = prompt("Test");
+let test = prompt("Test");
 
-// console.log(test);
+console.log(test);
 //не заметила разницы между IE и Chrome, если default не указать выводит в консоли пустую строку и там и там а не undefined как в учебнике пишут
 
-// let isBoss = confirm("Are you Boss?");
-// console.log(isBoss);
+let isBoss = confirm("Are you Boss?");
+console.log(isBoss);
 
-// let newUserName = prompt("What's your name?");
-// console.log(`Welcome, ${newUserName}!`);
+let newUserName = prompt("What's your name?");
+console.log(`Welcome, ${newUserName}!`);
 
 console.log("--------------- 2.7 ----------------");
 
 let value = true;
-console.log(typeof value);
+console.log(typeof value);  // boolean
 value = String(value);
-console.log(typeof (value));
+console.log(typeof (value)); // string
 
-console.log("6" / "2");
+console.log("6" / "2");  // 3
 
 let str = "123";
-console.log(typeof str);
+console.log(typeof str);  // string
 str = Number(str);
-console.log(typeof str);
+console.log(typeof str);  // number
 
 let str2 = Number("this is string, not number");
 console.log(str2);
 
-console.log(Number("  123  "));   //123
-console.log(Number(undefined));   // NaN
-console.log(Number(null));        // 0
-console.log(Number("text element")); NaN
-console.log(Number(false));       // 0
-console.log(Number(true));        // 1
+console.log(Number("  123  "));      //123
+console.log(Number(undefined));      // NaN
+console.log(Number(null));           // 0
+console.log(Number("text element")); // NaN
+console.log(Number(false));          // 0
+console.log(Number(true));           // 1
 
 console.log("-------------------------------");
 
@@ -75,10 +73,10 @@ console.log(Boolean(null));    //false
 console.log(Boolean(0));       //false
 console.log(Boolean(NaN));     //false
 console.log(Boolean("345"));   //true будь який не пустий рядок
-let constUndefind;  // не визначенна переменна
-console.log(Boolean(constUndefind)); //false
-console.log(Boolean("0")); //true бо рядок не пустий
-console.log(Boolean(""));  //false  бо рядок пустий
+let constUndefind;     // не визначенна переменна
+console.log(Boolean(constUndefind));  //false
+console.log(Boolean("0"));  //true бо рядок не пустий
+console.log(Boolean(""));   //false  бо рядок пустий
 
 console.log("-------------- 2.8 теорія -----------------");
 
@@ -90,7 +88,7 @@ console.log("1" + 2 + 2); // буде 122 бо першій операнд ря�
 console.log("6" - 2);   // 4 (- перетворює на число)
 console.log("6" / "2");   // 3
 
-console.log(+true);  // 1 перетворює на число
+console.log(+true);  // 1 (перетворює на число)
 console.log(+"");    // 0, працює як і Number но коротше
 
 let apples = "2";
@@ -100,7 +98,7 @@ console.log(+apples + +orange); // 5
 
 let n = 2;
 n += 3;  // n = n + 3
-n++;     // додає 1          тількі для змінной 7++ не можно
+n++;     // додає 1          тількі для змінной (7++ не можно)
 console.log(n); // 6
 
 let counter = 1;
@@ -143,9 +141,9 @@ console.log(undefined + 1); // Nan  (undefined у числовому це NaN)
 console.log(" \t \n" - 2);  // -2   (Символи пробелів дають 0)
 console.log("---------------------");
 
-// let a1 = prompt("Перше число?", 1);
-// let b1 = prompt("Друге число?", 2);
-// alert(+a1 + +b1); // 3
+let a1 = prompt("Перше число?", 1);
+let b1 = prompt("Друге число?", 2);
+alert(+a1 + +b1); // 3
 
 console.log("-------------- 2.9 теорія -----------------");
 
@@ -213,13 +211,61 @@ console.log((login == 'Працівник') ? 'Привіт' :
     (login == 'Директор') ? 'Вітаю' :
         (login == '') ? 'Немає логіну' : 'помилка');
 
+console.log("--------------- 2.11 завдання ----------------");
+
+console.log(null || 2 || undefined); // 2
+
+console.log( console.log(1) || 2 || console.log(3) ); // 1 and 2
+
+console.log(1 && null && 2);  // null
+
+// alert( alert(1) && alert(2) );  // 1 and undefined
+
+console.log(null || 2 && 3 || 4);  // 3
+
+let ageUser = 93;
+if (ageUser >= 14 && ageUser <= 90) {
+  console.log('Age from 14 to 90');
+}
+
+if (!(ageUser >= 14 && ageUser <= 90)) {
+  console.log('younger than 14 or elder than 90');
+}
+if (ageUser < 14 || ageUser > 90) {
+  console.log('younger than 14 or elder than 90');
+}
+
+if (-1 || 0) console.log( 'перший' ); // its work
+if (-1 && 0) console.log( 'другий' );
+if (null || -1 && 1) console.log('третій');  // its work
+
+let userLogin = prompt('Enter login', '');
+if (userLogin === 'admin') {
+  let userPassword = prompt('Enter password', '');
+  if (userPassword === 'owner') {
+    alert('Welcome!');
+  } else if (userPassword === '' || userPassword === null) {
+    alert('escape');
+  } else {
+    alert('password is not correct');
+  }
+} else if (userLogin === '' || userLogin === null) {
+  alert('escape');
+} else {
+  alert('I dont know you');
+}
 
 
 
 
 
 
-console.log("--------------  теорія -----------------");
+
+
+
+
+
+console.log("--------------  решала для себя -----------------");
 // console.log('558' > 22++);   // mistake
 
 let userCounter = 0;
@@ -232,3 +278,23 @@ console.log(18 && !''); // true
 
 let names = 0;
 console.log(names ?? 'no names');   // 0
+
+if (1 === '1') {
+  console.log('its true');
+} else {
+  console.log('its false'); // this
+}
+
+if (5 == '5') {
+  console.log('its true'); // this
+} else {
+  console.log('its false');
+}
+
+console.log((92 > '11' && 58 < 100) ? 'true' : 'false'); // true
+
+if (0) {
+  console.log('its false');
+} else {
+  console.log('its true'); // this
+}
