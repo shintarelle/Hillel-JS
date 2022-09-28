@@ -3,8 +3,8 @@
 console.log('exercise 6');
 // Переписать код ниже с использованием конструкции switch…case
 
-// let numOrStr = prompt('input number or string');
-// console.log(numOrStr);
+let numOrStr = prompt('input number or string');
+console.log(numOrStr);
 
 
 // if(numOrStr === null) {
