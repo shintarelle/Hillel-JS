@@ -161,25 +161,35 @@ welcome(); // помилка в суворому режимі (ReferenceError: w
 
 // Замініть Функціональні Вирази на стрілкові функції у коді нижче:
 
-function ask(question, yes, no) {
-  if (confirm(question)) yes();
-  else no();
-}
+// function ask(question, yes, no) {
+//   if (confirm(question)) yes();
+//   else no();
+// }
 
-ask(
-  "Ви згодні?",
-  function() { alert("Ви погодились."); },
-  function() { alert("Ви скасували виконання."); }
-);
+// ask(
+//   "Ви згодні?",
+//   function() { alert("Ви погодились."); },
+//   function() { alert("Ви скасували виконання."); }
+// );
 
 // с оператором ? и стрелочными функциями
 
-function ask(question, yes, no) {
-  confirm(question) ? yes(): no();
+// function ask(question, yes, no) {
+//   confirm(question) ? yes(): no();
+// }
+
+// ask(
+//   "Ви згодні?",
+//   () => alert("Ви погодились."),
+//   () => alert("Ви скасували виконання.")
+// );
+
+//?-------------------------------------------------------------------------------
+// Ваша задача состоит в том, чтобы создать функцию, которая может принимать любое неотрицательное целое число в качестве аргумента и возвращать его с цифрами в порядке убывания. По сути, переставьте цифры, чтобы получить максимально возможное число.
+
+function descendingOrder(n){
+    reversed = Array.prototype.map.call(n, (x) => x).reverse().join('');
+    return reversed;
 }
 
-ask(
-  "Ви згодні?",
-  () => alert("Ви погодились."),
-  () => alert("Ви скасували виконання.")
-);
+console.log(desceningOrder(756559));

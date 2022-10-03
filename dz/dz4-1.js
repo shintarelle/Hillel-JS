@@ -183,7 +183,7 @@ let str = 'Hello world?';
 
 
 symbols = (prompt('введите символы которые надо удалить через запятую ', ''));
-let symbArray = symbols.split(',');
+let symbArray = symbols.split(','); // или '' тогда можно без запятой вводить
 console.log(symbArray);
 // let symbArray = ['l', 'd'];
 
