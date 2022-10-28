@@ -6,38 +6,28 @@
 
 
 class House {
-    number;
-    numberOfApartment = [];
-    constructor(number, numberOfApartment) {
-        this.number = number;
-        for (let i = 1; i <= numberOfApartment; i++) {
-            this.numberOfApartment.push(new Apartment(i));
-        }
-
+  number;
+  apartments = [];
+  constructor(number, apartments) {
+    this.number = number;
+    for (let i = 1; i <= apartments; i++) {
+      this.apartments.push(new Apartment(i));
     }
-    setApartment(number, name) {
-        let apartment = new Apartment(number);
-        this.numberOfApartment.push(apartment);
-        apartment.setTenant(name);
-    }
-    getApartment() {
-        return this.numberOfApartment;
-    }
-
+  }
 }
 
 class Apartment {
     number;
-    tenant = [];
+    tenants = [];
     constructor(number) {
         this.number = number;
     }
     setTenant(name) {
         let tenant = new Tenant(name);
-        this.tenant.push(tenant);
+        this.tenants.push(tenant);
     }
     getTenant() {
-        return this.tenant;
+        return this.tenants;
     }
 }
 
@@ -50,7 +40,6 @@ class Tenant {
 }
 const tenant1 = new Tenant("Ivan");
 console.log(tenant1);
-
 const apartment1 = new Apartment(1);
 console.log(apartment1);
 apartment1.setTenant("Olya");
@@ -65,20 +54,15 @@ console.log(apartment1.number);
 const house1 = new House(1, 60);
 console.log(house1);
 
-const house2 = new House(2);
+const house2 = new House(2, 10);
 console.log(house2);
-house2.setApartment(1, 'Katya');
+house2.apartments[0].setTenant('Katya');
 console.log(house2);
-house2.setApartment(2, 'Oleg');
+house2.apartments[1].setTenant('Oleg');
 console.log(house2);
-house2.numberOfApartment[0].setTenant('Misha');
-house2.setApartment(3);
+house2.apartments[2].setTenant('Misha');
+
 console.log(house2);
-
-console.log(house2.getApartment());
-
-
-
 
 
 //?------------------------------------------------------------------
@@ -105,18 +89,6 @@ class Person {
     constructor(name, age) {
         this.name = name;
         this.age = age;
-    }
-    getName() {
-        return this.name;
-    }
-    getAge() {
-        return this.age;
-    }
-    setName(newName) {
-        this.name = newName;
-    }
-    setAge(newAge) {
-        this.age = newAge;
     }
     getInfo() {
         return this.name + ' ' + this.age;
@@ -151,18 +123,18 @@ class Auto {
 const person1 = new Person('Michele', 30);
 console.log(person1);
 
-console.log(person1.getName());
-person1.setName('Piter');
-person1.setAge(25);
+console.log(person1.name);
+person1.name = 'Piter';
+person1.age = 25;
 console.log(person1);
 
 const person2 = new Person();
 console.log(person2);
-person2.setName('Ann');
+person2.name = 'Ann';
 console.log(person2)
-person2.setAge(20);
-console.log(person2.getName());
-console.log(person2.getAge());
+person2.age = 20;
+console.log(person2.name);
+console.log(person2.age);
 
 console.log(person2.getInfo());
 
@@ -173,8 +145,8 @@ console.log(person2.getInfo());
 
 // if ((namePerson != '') && (agePerson != '') && (+agePerson > 18)) {
 //     person3 = new Person();
-//     person3.setName(namePerson);
-//     person3.setAge(agePerson);
+//     person3.name = namePerson;
+//     person3.age = agePerson;
 // }
 // console.log(person3);
 
@@ -186,7 +158,7 @@ console.log(person2.getInfo());
 // console.log(auto2);
 
 function checkEmptyString(string) {
-    if (string == '') {
+    if (string === '') {
         alert('incorrect enter');
     } else {
         return string;
@@ -242,19 +214,19 @@ function checkAge(number) {
 
 
 class Hamburger {
-    static SIZE_SMALL = [50, 20];
-    static SIZE_BIG = [100, 40];
+  static SIZE_SMALL = { money: 50, kkal: 20 };
+  static SIZE_BIG = { money: 100, kkal: 40 };
 
-    static STUFFING_CHEESE = [10, 20];
-    static STUFFING_SALAD = [20, 5];
-    static STUFFING_POTATO = [15, 10];
+  static STUFFING_CHEESE = { money: 10, kkal: 20 };
+  static STUFFING_SALAD = { money: 20, kkal: 5 };
+  static STUFFING_POTATO = { money: 15, kkal: 10 };
 
-    static TOPPING_SAUCE = [15, 0];
-    static TOPPING_MAYO = [20, 5];
+  static TOPPING_SAUCE = { money: 15, kkal: 0 };
+  static TOPPING_MAYO = { money: 20, kkal: 5 };
 
-    size;
-    stuffing = [];
-    toping = [0, 0];
+  size;
+  stuffing = {};
+  toping = {money: 0,kkal: 0};
 
     constructor(size, stuffing) {
         this.size = size;
@@ -262,16 +234,16 @@ class Hamburger {
     }
 
     addTopping(toping) {
-        this.toping[0] += toping[0];
-        this.toping[1] += toping[1];
+        this.toping.monay += toping.money;
+        this.toping.kkal += toping.kkal;
     }
 
     calculateCalories() {
-        return this.size[1] + this.stuffing[1] + this.toping[1];
+        return this.size.kkal + this.stuffing.kkal + this.toping.kkal;
     }
 
     calculatePrice() {
-        return this.size[0] + this.stuffing[0] + this.toping[0];
+        return this.size.money + this.stuffing.money + this.toping.money;
     }
 }
 
@@ -327,9 +299,13 @@ class Student {
         this.grade.push(grade);
     }
 
-    getAge() {
-        return 2022 - Number(this.yearOfBirth);
-    }
+  getAge() {
+    let now = new Date();
+    let year = new Date(this.yearOfBirth);
+    let age = now.getFullYear() - year.getFullYear();
+
+    return age;
+  }
 
     getAvarageRaiting() {
         let avarageRaiting = 0;
@@ -340,7 +316,7 @@ class Student {
     }
     present() {
         for (let i = 0; i < this.attendance.length; i++) {
-            if (this.attendance[i] === false || this.attendance[i] === true) {
+            if (typeof this.attendance[i] === 'boolean') {
                 continue;
             } else if ((!!this.attendance[i])) {
 
@@ -349,11 +325,10 @@ class Student {
                 break;
             }
         }
-
     }
     absent() {
         for (let i = 0; i < this.attendance.length; i++) {
-            if (this.attendance[i] === false || this.attendance[i] === true) {
+            if (typeof this.attendance[i] === 'boolean') {
                 continue;
             } else if ((!!this.attendance[i])) {
 
@@ -388,6 +363,7 @@ student.setName('Vanya');
 console.log(student);
 student.setSurname('Ivanov');
 student.setYearOfBirth(1980);
+console.log(student.getAge());
 console.log(student);
 for (let i = 89; i < 95; i++) {
     student.setGrade(i);
@@ -397,6 +373,7 @@ console.log(student);
 
 for (let i = 0; i < 25; i++){
     student.present();
+    // student.absent();
 }
 console.log(student);
 console.log(student.attendance.length)
@@ -411,6 +388,7 @@ for (let i = 0; i < 25; i++){
 }
 console.log(student2);
 student2.summary();
+
 
 //?-------------------------------------------------------------
 
