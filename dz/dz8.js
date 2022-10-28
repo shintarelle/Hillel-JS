@@ -25,7 +25,6 @@ class CoffeeRecept {
   constructor(){
     // this.volume = volume;
     // this.coffee = volume;
-
     // this.#coast = coast;
   }
 
@@ -46,7 +45,7 @@ class CoffeeRecept {
         return this.#coast;
     }
   setCoast(coast) {
-        return this.#coast + coast;
+        this.#coast = this.#coast + coast;
     }
 
   getSugar(){
@@ -70,7 +69,18 @@ class CoffeeRecept {
       sizeCup: this.sizeCup
     }
   }
-
+  divTwoPart() {
+    this.coffee = this.coffee / 2;
+    this.volume = this.volume / 2;
+    this.#sugar = this.#sugar / 2;
+    this.#coast = this.#coast / 2;
+    return {
+      coffee: this.coffee,
+      volume: this.volume,
+      coast: this.#coast,
+      sugar: this.#sugar,
+      sizeCup: this.sizeCup};
+  }
 }
 //?----------------------------------------------
 
@@ -78,8 +88,6 @@ class EspressoRecept extends CoffeeRecept{
   constructor(){
     super();
     this.cookingEspresso();
-
-
   }
 }
 
@@ -91,7 +99,9 @@ console.log(espresso.getInfo());
 espresso.cookingEspresso();
 console.log(espresso.getInfo());
 console.log(espresso.getCoast());
-espresso.cookingEspresso(6);
+espresso.addSugar();
+console.log(espresso.getInfo());
+espresso.cookingEspresso(6);   // не сработает - переполнение стакана
 console.log(espresso)
 
 
@@ -118,9 +128,14 @@ class AmericanoRecept extends CoffeeRecept {
     if (this.volume + water < this.sizeCup) {
     this.water = this.water + water;
     this.volume = this.volume + water;
-    console.log(this.volume);
-    console.log(this.sizeCup);
-    console.log(this.water);
+    }
+  }
+
+  divTwoPart() {
+    const result = super.divTwoPart();
+    return {
+      ...result,
+      water: this.water / 2
     }
   }
 }
@@ -131,16 +146,13 @@ console.log(americano);
 americano.cookingEspresso(2);
 console.log(americano);
 
-americano.addWater(400);
+americano.addWater(400); // не сработает - переполнение стакана
 console.log(americano);
 
 americano.cookingEspresso(2);
 console.log(americano);
+americano.addSugar();
 console.log(americano.getInfo());
-console.log(americano.getCoast());
-console.log(americano.volume)
-
-
 
 
 //?----------------------------------------------------
@@ -167,6 +179,13 @@ class LatteRecept extends CoffeeRecept{
     }
 
   }
+  divTwoPart() {
+    const result = super.divTwoPart();
+    return {
+      ...result,
+      milk: this.milk / 2
+    }
+  }
 }
 
 const latte = new LatteRecept(50);
@@ -183,30 +202,32 @@ console.log(latte.getCoast());
 //?-----------------------------------------------------
 
 class DoubleLatteRecept extends CoffeeRecept{
-    constructor() {
-        super();
-        const firstLatte = new LatteRecept(50);
-        const secondLatte = new LatteRecept(50);
+  constructor() {
+    super();
+    const firstLatte = new LatteRecept(50);
+    const secondLatte = new LatteRecept(50);
+    this.volume = firstLatte.volume + secondLatte.volume;
+    this.coffee = firstLatte.coffee + secondLatte.coffee;
+    this.milk = firstLatte.milk + secondLatte.milk;
+    this.sizeCup = SIZE_L;
 
-        this.volume = firstLatte.volume + secondLatte.volume;
-        this.coffee = firstLatte.coffee + secondLatte.coffee;
-        this.milk = firstLatte.milk + secondLatte.milk;
-        this.sizeCup = SIZE_L;
-        console.log(firstLatte.getCoast() + secondLatte.getCoast())
-        // this.coast = this.setCoast(firstLatte.getCoast() + secondLatte.getCoast());
-    }
-    getInfo(){
+    let doubleCoast = firstLatte.getCoast() + secondLatte.getCoast();
+    console.log(doubleCoast)
+    this.setCoast(doubleCoast);
+  }
+  getInfo(){
     const result = super.getInfo();
     return {
       ...result,
         milk: this.milk
-        // coast: this.setCoast(firstLatte.getCoast() + secondLatte.getCoast())
     }
   }
 }
 
 const doubleLatte = new DoubleLatteRecept();
 console.log(doubleLatte);
+console.log(doubleLatte.getInfo());
+doubleLatte.addSugar();
 console.log(doubleLatte.getInfo());
 
 // Добавить сущность "стаканчик" есть такие размеры:
@@ -222,49 +243,56 @@ console.log(doubleLatte.getInfo());
 // SIZE_L = 500;
 
 class Cup {
-
     constructor(size, obj,) {
       this.size = size;
       this.obj = obj;
 
-      while (this.size < this.obj.volume) {
-        this.size = this.size * 2;
-        // if (this.size > 100) {
-        //   this.size = SIZE_M
-        //   if (this.size > 250) {
-        //     this.size = SIZE_L
-        //   }
-        // }
-        // if (this.size > 500) {
-        //   this.devideDrink()
-        // }
-      }
-    }
-  checkVolume() {
-        if (this.obj.volume > this.obj.sizeCup) {
-          this.obj.sizeCup = this.obj.sizeCup * 2;
-          console.log(this.obj.sizeCup)
-          // if ()
-          // this.devideDrink()
-        }
     }
 
-    devideDrink() {
-      const cup1 = new Cup(this.size, this.obj);
-      const cup2 = new Cup(this.size, this.obj);
+  devideDrink() {
+    let drink1, drink2 = {};
+    drink1 = this.obj.divTwoPart();
+    drink2 = Object.assign({}, drink1);
+
+    const cup1 = new Cup(this.size,  drink1);
+    const cup2 = new Cup(this.size, drink2);
 
       return [cup1, cup2];
-
-
-
-
     }
 }
+
 const americano2 = new AmericanoRecept(30);
 
-const cup1 = new Cup(SIZE_M, americano2);
-console.log(cup1);
+const cup = new Cup(SIZE_M, americano2);
+console.log(cup);
 americano2.addWater(60);
 console.log(americano2)
-cup1.checkVolume();
-console.log(cup1)
+americano2.setSugar(4);
+console.log(americano2)
+
+console.log(cup.devideDrink());
+
+const latte2 = new LatteRecept(50);
+const cuplatte = new Cup(SIZE_M, latte2);
+latte2.setSugar(4);
+latte2.addMilk(50);
+console.log(latte2.getInfo());
+console.log(cuplatte.devideDrink());
+
+
+// 1 1 2 3 5 8 13 21
+//посчитать число фибаначи: 1+1=2 1+2=3 2+3-5 3+5=8 5+8=13 8+13=21 и тд число фибаначи от 8 равно 21
+
+function fibanachi(n) {
+  if (n <= 2) {
+    return 1;
+  } else {
+      return fibanachi(n - 1) + fibanachi(n - 2);
+  }
+}
+
+console.log(fibanachi(8));
+
+const fibonacci = (n) => (n <= 2 ? 1 : fibonacci(n - 1) + fibonacci(n - 2));
+console.log(fibonacci(10));   // 55
+console.log(fibonacci(20));   //6765
