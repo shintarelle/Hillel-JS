@@ -1,120 +1,79 @@
-// Напишіть інтерфейс для створення списку на основі того, що введе користувач.
+// // const myPref = document.getElementById("myP");
+// // const myPsRef = document.getElementsByTagName("p");
 
-// Для кожного пункта списку:
+// const sel = document.querySelector('#myP');
 
-// Запитайте текст пункту у користувача за допомогою prompt.
-// Створіть <li> з цим текстом та додайте його до <ul>.
-// Продовжуйте поки користувач не припинить вводити дані (натисне Esc або введе пустий рядок).
-// Всі елементи повинні створюватися динамічно.
+// // const arrP = [...myPsRef];
 
-// Якщо користувач вводить HTML-теги, вони мають розглядатися як текст.
+// // console.log(sel);
 
-// document.body.insertAdjacentHTML('afterend', '<ul id= "list"></ul>');
+// // sel.innerText = '<span>my span<span/>'
 
-// let okCancel = true;
-// while (okCancel) {
-//   let li = document.createElement('li');
-//   let text = prompt('enter lists element');
-//   if (text) {
-//     li.textContent = text;
-//     list.append(li);
-//   } else okCancel = false;
+// // // sel.innerHTML = '<span>my span<span/>'
 
+// const mySpan = document.createElement('span');
+// mySpan.innerText = 'test';
+// sel.classList.add('myClass');
+// sel.classList.remove('qwe');
+// const mySpan1 = document.createElement('span');
+// mySpan1.innerText = 'test 123';
+// sel.appendChild(mySpan);
+
+
+// mySpan.appendChild(mySpan1);
+
+// // sel.appendChild(mySpan);
+
+// console.dir(sel.dataset.tested);
+
+
+
+const btnRef = document.createElement('button');
+btnRef.setAttribute('type', 'submit');
+btnRef.setAttribute('data-numb', '7');
+
+btnRef.innerText = 'click me!'
+
+const  clickHandler = (e) => {
+  console.log(e, arguments);
+  // console.log('click',   e.target.getAttribute('type'));
+
+
+  // btnRef.removeEventListener('click', clickHandler);
+}
+
+btnRef.addEventListener('click', clickHandler);
+
+document.body.append( btnRef);
+
+
+
+
+// const divsRef = [...document.querySelectorAll('div')];
+
+
+// function clickHandler (e) {
+//   // e.preventDefault();
+//   // e.stopPropagation();
+//   console.log(e)
 // }
 
-// Напишіть функцію createTree яка створює вкладений ul/li список з вкладеного об’єкта.
+// document.body.addEventListener('click', clickHandler, false)
+//
+// divsRef.forEach(item => item.addEventListener('click', clickHandler))
 
-let data = {
-  Риба: {
-    форель: {},
-    лосось: {}
-  },
 
-  Дерево: {
-    Величезні: {
-      секвойя: {},
-      дуб: {}
-    },
-    Квітучі: {
-      яблуня: {},
-      магнолія: {}
-    }
-  }
-};
-document.body.insertAdjacentHTML('afterend', '<div id= "container"></div>');
-// let container = document.getElementById('container');
+// console.log(divsRef);
 
-function createTree(container, obj) {
-      container.innerHTML = createTreeText(obj);
-    }
 
-    function createTreeText(obj) { // окрема рекурсивна функція
-      let li = '';
-      let ul;
-      for (let key in obj) {
-        li += '<li>' + key + createTreeText(obj[key]) + '</li>';
-      }
-      if (li) {
-        ul = '<ul>' + li + '</ul>'
-      }
-      return ul || '';
-    }
 
-    // createTree(container, data);
 
- function createTree(container, obj) {
-      container.append(createTreeDom(obj));
-    }
-// or second variant
+// const allPRef = [...document.querySelectorAll('p')];
 
-    function createTreeDom(obj) {
-      // якщо дочірніх елементів немає, тоді виклик повертає undefined
-      // та <ul> не буде створено
-      if (!Object.keys(obj).length) return;
+// allPRef.reverse();
 
-      let ul = document.createElement('ul');
+// document.body.innerHTML = '';
+// document.body.append(...allPRef)
 
-      for (let key in obj) {
-        let li = document.createElement('li');
-        li.innerHTML = key;
-
-        let childrenUl = createTreeDom(obj[key]);
-        if (childrenUl) {
-          li.append(childrenUl);
-        }
-
-        ul.append(li);
-      }
-
-      return ul;
-    }
-
-    let container = document.getElementById('container');
-    createTree(container, data);
-
-// Дано дерево з вкладених ul/li.
-// Напишіть код, який додає до кожного <li> кількість його нащадків. Пропускаючи пусті вузли (без дочірніх елементів).
-// Результат:
-// Тварини [9]
-//   Ссавці [4]
-//     Корови
-//     Осли
-//     Собаки
-//     Тигри
-//   Інші [3]
-//     Змії
-//     Птахи
-//     Ящірки
-// Риби [5]
-//   Акваріумні [2]
-//     Гуппі
-//     Риба-янгол
-//   Морські [1]
-//     Морська форель
-
-let list = document.getElementsByTagName('li');
-for (let li of list) {
-  let count = li.getElementsByTagName('li').length;
-  if (!count) continue;
-  li.firstChild.data += ' [' + count + ']';
-}
+//отчно выучить. будут нужны для работыв ближ время
+// ref => target, innerText, innerHTML , classList, setAttribute(), getAttribute(), append(), querySelector*()
