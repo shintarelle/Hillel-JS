@@ -1,16 +1,5 @@
 // сделать используя только js приложение Todo list
-
-// функционал:
-
-// добавлять новый айтем
-// редактировать айтем
-// удалять айтем
-// ставить статус (чекбокс )
-// удалить всё
-// небольшую валидацию по усмотрению (низя спецсимволы вводить)
-// дизайн прикреплён ниже
-
-const state = [];
+// моя версия
 
 const inputRef = document.createElement('input');
 inputRef.placeholder = "enter text";
@@ -26,7 +15,7 @@ buttonClearAll.addEventListener('click', clearALL);
 
 const toDoList = document.createElement('ul');
 
-const divForToDoList = document.getElementById('toDoList');
+const divForToDoList = document.getElementById('divtoDoList');
 divForToDoList.append(inputRef);
 divForToDoList.append(buttonAdd);
 divForToDoList.append(buttonClearAll);

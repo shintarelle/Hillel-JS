@@ -1,8 +1,7 @@
-
 textarea:hover {
   background-color: yellow;
+}
 
 .checked {
   text-decoration: line-through;
-
 }
