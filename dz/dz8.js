@@ -11,6 +11,10 @@
 // Добавить возможность разделить напиток на 2 стакана (будет 2 напитка отдельных).
 
 
+  SIZE_S = 100;
+  SIZE_M = 250;
+  SIZE_L = 500;
+
 class CoffeeRecept {
 
   #coast = 0;
@@ -69,18 +73,6 @@ class CoffeeRecept {
       sizeCup: this.sizeCup
     }
   }
-  divTwoPart() {
-    this.coffee = this.coffee / 2;
-    this.volume = this.volume / 2;
-    this.#sugar = this.#sugar / 2;
-    this.#coast = this.#coast / 2;
-    return {
-      coffee: this.coffee,
-      volume: this.volume,
-      coast: this.#coast,
-      sugar: this.#sugar,
-      sizeCup: this.sizeCup};
-  }
 }
 //?----------------------------------------------
 
@@ -132,11 +124,24 @@ class AmericanoRecept extends CoffeeRecept {
   }
 
   divTwoPart() {
-    const result = super.divTwoPart();
-    return {
-      ...result,
-      water: this.water / 2
-    }
+
+    let drink1 = new AmericanoRecept();
+    let drink2 = new AmericanoRecept();
+    drink1.coffee = this.coffee / 2;
+    drink1.volume = this.volume / 2;
+    drink1.setSugar(this.getSugar()/2);
+    drink1.setCoast(this.getCoast() / 2);
+    drink1.water = this.water / 2;
+
+    drink2.coffee = this.coffee / 2;
+    drink2.volume = this.volume / 2;
+    drink2.setSugar(this.getSugar() / 2);
+    drink2.setCoast(this.getCoast() / 2);
+    drink2.water = this.water / 2;
+
+    console.log(drink1)
+
+    return [drink1, drink2]
   }
 }
 
@@ -153,6 +158,7 @@ americano.cookingEspresso(2);
 console.log(americano);
 americano.addSugar();
 console.log(americano.getInfo());
+
 
 
 //?----------------------------------------------------
@@ -180,11 +186,24 @@ class LatteRecept extends CoffeeRecept{
 
   }
   divTwoPart() {
-    const result = super.divTwoPart();
-    return {
-      ...result,
-      milk: this.milk / 2
-    }
+
+    let drink1 = new LatteRecept();
+    let drink2 = new LatteRecept();
+    drink1.coffee = this.coffee / 2;
+    drink1.volume = this.volume / 2;
+    drink1.setSugar(this.getSugar()/2);
+    drink1.setCoast(this.getCoast() / 2);
+    drink1.milk = this.milk / 2;
+
+    drink2.coffee = this.coffee / 2;
+    drink2.volume = this.volume / 2;
+    drink2.setSugar(this.getSugar() / 2);
+    drink2.setCoast(this.getCoast() / 2);
+    drink2.milk = this.milk / 2;
+
+    console.log(drink1)
+
+    return [drink1, drink2]
   }
 }
 
@@ -249,10 +268,12 @@ class Cup {
 
     }
 
-  devideDrink() {
-    let drink1, drink2 = {};
-    drink1 = this.obj.divTwoPart();
-    drink2 = Object.assign({}, drink1);
+  devideDrink(obj) {
+
+    console.log(obj)
+    const drinks = obj.divTwoPart();
+    const drink1 = drinks[0];
+    const drink2 = drinks[1];
 
     const cup1 = new Cup(this.size,  drink1);
     const cup2 = new Cup(this.size, drink2);
@@ -266,18 +287,37 @@ const americano2 = new AmericanoRecept(30);
 const cup = new Cup(SIZE_M, americano2);
 console.log(cup);
 americano2.addWater(60);
-console.log(americano2)
 americano2.setSugar(4);
 console.log(americano2)
 
-console.log(cup.devideDrink());
+console.log(cup.devideDrink(americano2));
+const cups = cup.devideDrink(americano2);
+const cup1 = cups[0];
+const cup2 = cups[1];
+console.log(cup1)
+cup1.obj.addWater(30);
+console.log(cup1);
+console.log(cup1.obj.getInfo());
+
 
 const latte2 = new LatteRecept(50);
 const cuplatte = new Cup(SIZE_M, latte2);
 latte2.setSugar(4);
 latte2.addMilk(50);
 console.log(latte2.getInfo());
-console.log(cuplatte.devideDrink());
+console.log(cuplatte.devideDrink(latte2));
+
+const cups2 = cuplatte.devideDrink(latte2);
+const cuplatte1 = cups2[0];
+
+const cuplatte2 = cups2[1];
+console.log(cuplatte2);
+console.log(cuplatte2.obj.getInfo());
+cuplatte2.obj.addSugar();
+cuplatte2.obj.addMilk(50);
+console.log(cuplatte2.obj.getInfo());
+cuplatte1.obj.addMilk(50);
+console.log(cuplatte1);
 
 
 // 1 1 2 3 5 8 13 21
