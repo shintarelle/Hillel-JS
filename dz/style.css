@@ -1,10 +1,12 @@
 textarea:hover {
   background-color: yellow;
 }
+
 .checked {
   text-decoration: line-through;
 }
 img {
   width: 100px;
   height: 100px;
+
 }
