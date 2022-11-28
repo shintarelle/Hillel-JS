@@ -5,3 +5,8 @@ textarea:hover {
 .checked {
   text-decoration: line-through;
 }
+img {
+  width: 100px;
+  height: 100px;
+
+}
