@@ -1,15 +1,7 @@
-//?--------------------ДЗ 26. Доделать Todo List------------------
+//?--------------------25 Local Storage----------------
+// туду лист должен остаться в том состоянии в котором был после выхода из приложения
 
-// Подгрузка данных при захождении на страницу
-// Сделать добавление (вначале отправка запроса, потом обновления UI )
-// Сделать удаление (вначале отправка запроса, потом обновления UI )
-// Сделать обновления данных (вначале отправка запроса, потом обновления UI )
-// Поиск по полю text (надо сделать отдельное поле)
-// Сортировка по полю id (от меньшего до большего, и на оборот)
-// По клику на text отдельно отображать все данные по тудушке (отдельный запрос нужен)
-
-let state = [];
-const userId = 1;
+const state = [];
 
 const inputRef = document.createElement('input');
 inputRef.placeholder = "enter text";
@@ -31,27 +23,52 @@ divForToDoList.append(buttonAdd);
 divForToDoList.append(buttonClearAll);
 divForToDoList.append(toDoList);
 
+// clearLocalStorage();
+getDataOfLocalStorage();
 
-async function addToDoItem() {
+
+function saveToLocalStorage() {
+  localStorage.clear();
+  state.forEach((s) => {
+
+    let index = state.findIndex(item => item == s)
+      // console.log('index--->', index);
+      let key = JSON.stringify(index);
+      // console.log('key--->', key);
+      let value = JSON.stringify(state[key]);
+      // console.log('value-->>', value)
+
+      localStorage.setItem(key, value);
+
+  })
+
+}
+
+function getDataOfLocalStorage() {
+
+  for (i = 0; i < localStorage.length; i++) {
+
+    state.push(JSON.parse(localStorage.getItem(i)));
+  }
+  renderLi();
+}
+
+function addToDoItem() {
 
   if (inputRef.value) {
-    // state.push({
-    // text: inputRef.value,
-    // checked: false,
-    // editable: false,
-    // id: new Date(),
-    // })
 
-    const data = await createToDo(inputRef.value);
-    if (!data) {
-      return;
-    }
-      state.push(coockedData(data));
-      renderLi();
+    state.push ({
+      text: inputRef.value,
+      checked: false,
+      editable: false,
+      id: new Date()
+    })
 
-      inputRef.value = '';
+    // console.log('add state', state)
 
+    inputRef.value = '';
 
+    renderLi();
   }
 }
 
@@ -62,24 +79,33 @@ function renderLi() {
   state.forEach((s) => {
     const item = createToDoItem(s);
     toDoList.append(item);
+
+    saveToLocalStorage()
+
   })
+
+// console.log('render state', state)
 }
 
 function clearALL() {
   toDoList.innerHTML = '';
   state.length = 0;
   console.log(state);
+
+  saveToLocalStorage()
 }
+
 
 function removeToDoItem(event) {
 
   const liObj = findObjbyEvent(event);
   const index = state.findIndex(s => s === liObj);
-
-  deleteToDo(state[index].id)
+  // console.log(index);
   state.splice(index, 1);
+  console.log(state);
 
   renderLi();
+  saveToLocalStorage()
 }
 
 function createToDoItem(liObj) {
@@ -116,12 +142,9 @@ function createToDoItem(liObj) {
     return item;
 }
 
-async function checkedToDoItem(event) {
+function checkedToDoItem(event) {
   const liObj = findObjbyEvent(event);
   event.target.nextElementSibling.classList.toggle('checked');
-
-  const res = await updateData(liObj.id, { ...findObjbyEvent, checked: liObj.checked });
-  console.log("res", res);
 
   if (liObj.checked == false) {
     liObj.checked = true;
@@ -132,7 +155,9 @@ async function checkedToDoItem(event) {
     console.log('liObj.checked', liObj.checked);
 
   }
+  saveToLocalStorage()
 }
+
 
 function createEditableToDoItem(liObj) {
   const item = document.createElement('li');
@@ -164,6 +189,8 @@ function editToDoItem(event) {
 
   const newItem = createEditableToDoItem(liObj)
   event.target.parentElement.parentElement.replaceChild(newItem, event.target.parentElement);
+
+  saveToLocalStorage()
 }
 
 function saveToDoItem(event) {
@@ -174,11 +201,6 @@ function saveToDoItem(event) {
   if (event.target.previousElementSibling.value != '') {
     liObj.text = event.target.previousElementSibling.value;
     liObj.editable = false;
-
-    const index = state.findIndex(s => s === liObj);
-    state[index].text = event.target.previousElementSibling.value;
-
-    updateData(state[index].id)
     renderLi();
   }
 
@@ -194,77 +216,4 @@ function cancel(event) {
 function findObjbyEvent(event) {
   const liObj = state.find(s => s.id.toString() == event.target.parentElement.dataset.id);
   return liObj;
-}
-
-function coockedData(item) {
-  return {text: item.title, checked: item.completed, id: item.id, editable: false }
-}
-
-function getInitialData() {
-  fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
-  .then(response => response.json())
-  .then(json => json.map(coockedData))
-  .then(mappedData => state = mappedData)
-  .then(() => renderLi())
-  .catch(error => console.log(error.message));
-}
-
-getInitialData();
-
-function updateData(id, data) {
-  // const updatedItem = state.find(item => item.id === id);
-  // console.log(updatedItem);
-  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      id: data.id,
-      title: data.text,
-      completed: data.checked,
-      userId,
-
-    }),
-    headers: {
-      'Content-type': 'application/json: charset-UTF-8',
-    },
-  }).then(data => {
-    if (!data.ok) {
-      throw new Error(data.status)
-    } else {
-      return data;
-    }
-  })
-    .then(data => console.log(data))
-    .catch(error => console.log(error.message))
-
-}
-
-function deleteToDo(id) {
-  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: "DELETE"
-  })
-}
-
-
-function createToDo(title) {
-  return fetch('https://jsonplaceholder.typicode.com/todos', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: title,
-      completed: false,
-      userId,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-    .then(data => {
-      if (!data.ok) {
-        throw new Error(data.status)
-      } else {
-        return data;
-      }
-    })
-    .then(response => response.json())
-    .catch(error => console.log(error.message))
-
 }

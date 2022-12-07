@@ -1,15 +1,18 @@
-//?--------------------ДЗ 26. Доделать Todo List------------------
+// сделать используя только js приложение Todo list
 
-// Подгрузка данных при захождении на страницу
-// Сделать добавление (вначале отправка запроса, потом обновления UI )
-// Сделать удаление (вначале отправка запроса, потом обновления UI )
-// Сделать обновления данных (вначале отправка запроса, потом обновления UI )
-// Поиск по полю text (надо сделать отдельное поле)
-// Сортировка по полю id (от меньшего до большего, и на оборот)
-// По клику на text отдельно отображать все данные по тудушке (отдельный запрос нужен)
+// функционал:
+
+// добавлять новый айтем
+// редактировать айтем
+// удалять айтем
+// ставить статус (чекбокс )
+// удалить всё
+// небольшую валидацию по усмотрению (низя спецсимволы вводить)
+// дизайн прикреплён ниже
+
+const userId = 1;
 
 let state = [];
-const userId = 1;
 
 const inputRef = document.createElement('input');
 inputRef.placeholder = "enter text";
@@ -31,6 +34,7 @@ divForToDoList.append(buttonAdd);
 divForToDoList.append(buttonClearAll);
 divForToDoList.append(toDoList);
 
+// let uPattern = /^[a-zA-Z0-9_-]{4,50}$/;
 
 async function addToDoItem() {
 
@@ -42,16 +46,15 @@ async function addToDoItem() {
     // id: new Date(),
     // })
 
-    const data = await createToDo(inputRef.value);
-    if (!data) {
-      return;
+    const data = await createTodo(inputRef.value);
+
+    if(!data){
+      return
     }
-      state.push(coockedData(data));
-      renderLi();
+    state.push(cookedData(data))
+    renderLi();
 
-      inputRef.value = '';
-
-
+    inputRef.value = '';
   }
 }
 
@@ -71,13 +74,26 @@ function clearALL() {
   console.log(state);
 }
 
+
 function removeToDoItem(event) {
 
+  // const index = state.findIndex(s => s.id.toString() == event.target.parentElement.dataset.id);
   const liObj = findObjbyEvent(event);
-  const index = state.findIndex(s => s === liObj);
 
-  deleteToDo(state[index].id)
+  const checkboxRef = event.target.parentElement.querySelector('input');
+  const buttonsRef = [...event.target.parentElement.querySelectorAll('button')];
+
+  checkboxRef.removeEventListener('click', checkedToDoItem);
+  buttonsRef[0].removeEventListener('click', editToDoItem);
+  buttonsRef[1].removeEventListener('click', removeToDoItem);
+
+  const index = state.findIndex(s => s === liObj);
+  deleteTodo(state[index].id)
+  // console.log(index);
   state.splice(index, 1);
+  // console.log(state);
+
+  // event.target.parentElement.remove();
 
   renderLi();
 }
@@ -113,26 +129,17 @@ function createToDoItem(liObj) {
 
     toDoList.append(item);
 
+    // console.log('liObj.text', liObj.text)
+
     return item;
 }
 
 async function checkedToDoItem(event) {
   const liObj = findObjbyEvent(event);
-  event.target.nextElementSibling.classList.toggle('checked');
 
-  const res = await updateData(liObj.id, { ...findObjbyEvent, checked: liObj.checked });
-  console.log("res", res);
-
-  if (liObj.checked == false) {
-    liObj.checked = true;
-    console.log('liObj.checked', liObj.checked);
-
-  } else {
-    liObj.checked = false;
-    console.log('liObj.checked', liObj.checked);
-
-  }
+  await updateData(liObj.id, {...liObj, checked: !liObj.checked});
 }
+
 
 function createEditableToDoItem(liObj) {
   const item = document.createElement('li');
@@ -157,29 +164,23 @@ function createEditableToDoItem(liObj) {
 
 function editToDoItem(event) {
 
+  // const liObj = state.find(s => s.id.toString() == event.target.parentElement.dataset.id);
   const liObj = findObjbyEvent(event);
   liObj.editable = true;
-
-  console.log('liObj' ,liObj);
 
   const newItem = createEditableToDoItem(liObj)
   event.target.parentElement.parentElement.replaceChild(newItem, event.target.parentElement);
 }
 
-function saveToDoItem(event) {
+async function saveToDoItem(event) {
 
-  const liObj = findObjbyEvent(event);
-  console.log('liObj.text', liObj.text);
-
+  // console.dir(event.target.previousElementSibling.value)
   if (event.target.previousElementSibling.value != '') {
-    liObj.text = event.target.previousElementSibling.value;
-    liObj.editable = false;
+    const liObj = findObjbyEvent(event);
 
-    const index = state.findIndex(s => s === liObj);
-    state[index].text = event.target.previousElementSibling.value;
+   await updateData(liObj.id, {...liObj, text: event.target.previousElementSibling.value});
 
-    updateData(state[index].id)
-    renderLi();
+
   }
 
 }
@@ -196,75 +197,83 @@ function findObjbyEvent(event) {
   return liObj;
 }
 
-function coockedData(item) {
-  return {text: item.title, checked: item.completed, id: item.id, editable: false }
+
+function cookedData (item) {
+  // console.log('item', item);
+  return {text: item.title, checked: item.completed, id: item.id,editable: false}
 }
 
-function getInitialData() {
+function getInitialData () {
   fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
-  .then(response => response.json())
-  .then(json => json.map(coockedData))
-  .then(mappedData => state = mappedData)
+  .then((response) => response.json())
+  .then((json) => json.map(cookedData))
+  .then((mappedData) => state = mappedData)
   .then(() => renderLi())
-  .catch(error => console.log(error.message));
-}
+  .catch(e => alert(e.message));
+};
 
 getInitialData();
 
+
+
 function updateData(id, data) {
-  // const updatedItem = state.find(item => item.id === id);
-  // console.log(updatedItem);
-  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      id: data.id,
-      title: data.text,
-      completed: data.checked,
-      userId,
-
-    }),
-    headers: {
-      'Content-type': 'application/json: charset-UTF-8',
-    },
-  }).then(data => {
-    if (!data.ok) {
-      throw new Error(data.status)
-    } else {
-      return data;
-    }
-  })
-    .then(data => console.log(data))
-    .catch(error => console.log(error.message))
-
-}
-
-function deleteToDo(id) {
-  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: "DELETE"
-  })
-}
+  // const updatedItem = state.find((item) => item.id === id);
 
 
-function createToDo(title) {
-  return fetch('https://jsonplaceholder.typicode.com/todos', {
-    method: 'POST',
-    body: JSON.stringify({
-      title: title,
-      completed: false,
-      userId,
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
-  })
-    .then(data => {
-      if (!data.ok) {
-        throw new Error(data.status)
-      } else {
-        return data;
+    fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: data.id,
+        title: data.text,
+        completed: data.checked,
+        userId,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    }).then(data => {
+      // console.log(data)
+      if(!data.ok){
+        throw new Error(data.status);
       }
+      return data
     })
-    .then(response => response.json())
-    .catch(error => console.log(error.message))
+    .then(async data => {
+      const json = await data.json()
+      const idx = state.findIndex(item => item.id === json.id);
+      state[idx] = cookedData(json)
+    }).then(data => {
+      renderLi();
+      return data
+    })
+    .catch((e) => console.log(e.message))
 
+}
+
+function deleteTodo(id) {
+  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+    method: 'DELETE'
+  })
+}
+
+
+function createTodo(title) {
+  return fetch('https://jsonplaceholder.typicode.com/todos/asdf/asdf/asdf', {
+  method: 'POST',
+  body: JSON.stringify({
+    title: title,
+    completed: false,
+    userId,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+.then(data => {
+  if(!data.ok){
+    throw new Error(data.status);
+  }
+  return data
+})
+.then((response) => response.json()).catch((e) => console.log(e.message))
 }
