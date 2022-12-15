@@ -196,6 +196,7 @@ function findObjbyEvent(event) {
   return liObj;
 }
 
+
 function coockedData(item) {
   return {text: item.title, checked: item.completed, id: item.id, editable: false }
 }
