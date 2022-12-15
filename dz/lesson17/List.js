@@ -7,6 +7,10 @@ class List {         //голубая рамка, наша ul
     // console.log(this.state)
   }
 
+  // clearAll() {
+  //   toDoList.innerHTML = '';
+  //   this.render();
+  // }
 
   render(){
     const toDoList = document.createElement('ul');

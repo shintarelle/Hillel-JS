@@ -1,3 +1,4 @@
+import List from './List.js';
 import State from './State.js';
 
 class Controller {     //синяя рамка, то что управляет нашими тудушками
@@ -18,7 +19,6 @@ class Controller {     //синяя рамка, то что управляет �
     // console.log('addToDoItem', this);
 
     if (this.inputRef.value) {
-
       this.state.addElement({
         text: this.inputRef.value,
         checked: false,
@@ -39,6 +39,20 @@ class Controller {     //синяя рамка, то что управляет �
     }
   }
 
+  clearALL() {
+    console.log('this.state--->', this.state)
+    console.log('this.state.getState()--->', this.state.getState())
+    console.log('this.state.getInstance()--->', State.getInstance())
+
+    // this.state.getState().forEach(elem => console.log('elem', elem))
+    //! пробовала перебрать миссив и к каждому применить метод deleteElement() но остается один элемент
+    this.state.getState().forEach(elem => this.state.deleteElement(elem.id))
+
+    //! 2 вариант: я не могу добраться до метода clearALLElement() который прописан в State.js
+    console.log('this.state.getState()--again ->', this.state.getState())
+
+  }
+
   render() {
     this.inputRef = document.createElement('input');
     this.inputRef.addEventListener('input', this.validate);
@@ -48,8 +62,12 @@ class Controller {     //синяя рамка, то что управляет �
     addList.innerText = 'Add';
     addList.addEventListener('click', this.addToDoItem.bind(this));
 
+    const buttonClearAll = document.createElement('button');
+    buttonClearAll.innerText = 'Clear all';
+    buttonClearAll.addEventListener('click', this.clearALL.bind(this));
 
-    return [this.inputRef, addList]
+
+    return [this.inputRef, addList, buttonClearAll]
   }
 }
 

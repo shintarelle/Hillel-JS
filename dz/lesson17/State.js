@@ -42,11 +42,17 @@ export default class State{
     this.rerender();
   }
 
-  deleteElement(id) {
+  deleteElement(id) {   //! --------------
     const idx = this.findIndexByID(id);
     this.#state.splice(idx, 1)
     this.rerender();
   }
+
+  clearAllElement() { //!--- до этого метода из контроллера у меня не получается достучаться. работает он или нет
+    // this.#state.forEach(elem => this.state.deleteElement(elem.id))
+    this.#state.splice(0, this.#state.length)
+  }
+
   updateElement(id, item) {
     const idx = this.findIndexByID(id);
     this.#state[idx] = item;
