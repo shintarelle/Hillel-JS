@@ -27,8 +27,8 @@ class MyApp extends Component {
 
   showResult() {
     console.log('state in showresult', this.state)
-    // const arr = Object.values(this.state);
-    // console.log('arr', arr)
+    const arr = Object.values(this.state);
+    console.log('arr', arr)
   }
 
   render() {
