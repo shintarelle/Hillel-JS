@@ -28,7 +28,7 @@ class Smile extends Component {
         <li>
           <div className='item'>
             <button id={this.props.id} onClick={this.handleChoise}><img className="smile" src={this.props.imageSrc} alt="smile"></img></button>
-            <span>{this.props.count}</span>
+            {/* <span>{this.props.count}</span> */}
 
           </div>
       </li>
