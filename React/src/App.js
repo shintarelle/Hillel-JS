@@ -1,23 +1,27 @@
-// import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import { renderCurrentType, treeToMap } from "./utils";
+import data from "./data.json";
 
-import Header from './Header';
+class App extends Component {
+  constructor() {
+    super();
+     // this.map = treeToMap(data[0].children);
+    this.map = treeToMap(data);
+  }
 
-import Main from './Main';
+   // map = {"/Common7/IDE/msdia140.dll": "msdia140.dll",
+  // "/Common7/Tools/msdia140.dll": "msdia140.dll" }
 
-// Приложение должно состоять из трёх блоков:
-// хедер
-// левая боковая навигация
-// центральный контейнер
-// Контент внутри блоков произвольный
+  render() {
+    console.log(this.map)
+    return (
+      <ul>
+        {renderCurrentType(data, ["/Common7",  "/VC", "/Common7/IDE", "/Common7/Tools","/VC/bin"])}
+      </ul>
+    )
+  }
 
-function App() {
-  return (
-    <div className="MyApp">
-      <Header />
-      <Main />
-    </div>
-  );
+
 }
 
 export default App;
