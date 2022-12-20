@@ -8,13 +8,14 @@ class ShowResult extends Component {
 
   handleShowResult(){
     this.props.showResult()
+    console.log('this.props.winner', this.props.winner)
   };
 
   render() {
     return (
       <div className='showresult'>
         <button onClick={this.handleShowResult}>Show Result</button>
-        <span> </span>
+        <span>Winner: {this.props.winner}</span>
       </div>
     )
   }
