@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MyApp from './MyApp.js';
 
 class Smile extends Component {
   constructor(props) {
