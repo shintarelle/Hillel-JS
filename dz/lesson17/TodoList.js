@@ -1,30 +1,6 @@
 import List from './List.js';
 import Controller from './Controller.js'
 import State from './State.js';
-
-const mockData = [{
-        text: '1 todo',
-        checked: false,
-        editable: false,
-        id: new Date(),
-      },
-    {
-        text: '2 todo',
-        checked: false,
-        editable: true,
-        id: new Date()+1,
-      },{
-        text: '3 todo',
-        checked: true,
-        editable: false,
-        id: new Date()+2,
-      },{
-        text: '4 todo',
-        checked: true,
-        editable: true,
-        id: new Date()+3,
-      }]
-
 class TodoList {    //зеленая рамка, общее наше приложение в котором контроллер и ul
 
   static instance = {};

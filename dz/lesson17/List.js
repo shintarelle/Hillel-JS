@@ -4,7 +4,6 @@ import State from './State.js';
 class List {         //голубая рамка, наша ul
   constructor() {
     this.state = State.getInstance();
-    // console.log(this.state)
   }
 
   // clearAll() {
@@ -12,16 +11,27 @@ class List {         //голубая рамка, наша ul
   //   this.render();
   // }
 
-  render(){
+  render1() {
     const toDoList = document.createElement('ul');
-
-    const items = this.state.getState().map(s => new ListItem(s, this.state));   // parameter state, map
+    const items = this.state.getState().map(s => new ListItem(s, this.state));
     const rendered = items.map(item => item.render());
-
-    // console.log('items', items);
-
     return [toDoList, ...rendered]
   }
-}
 
+  renderSearch() {
+    const toDoList = document.createElement('ul');
+    const items = this.state.getSearch().map(item => new ListItem(item, this.state));
+    const rendered = items.map(item => item.render());
+    return [toDoList, ...rendered]
+  }
+
+
+  render() {
+    if (this.state.getSearch().length === 0) {
+      return this.render1()
+    } else {
+      return this.renderSearch(this.state.getSearch())
+    }
+  }
+}
 export default List;

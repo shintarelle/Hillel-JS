@@ -38,8 +38,8 @@ class ListItem {        //красная рамка, наши li
   saveToDoItem() {
     const item = this.state.findByID(this.id);
 
-    console.log(item)
-    console.log(this.text)
+    // console.log(item)
+    // console.log(this.text)
 
     this.state.updateElement(this.id, { ...item, text: this.text, editable: false });
     // console.log(this.state.findByID(this.id))
@@ -51,9 +51,9 @@ class ListItem {        //красная рамка, наши li
   }
 
   handleChangeText(event) {
-    console.log(this);
+    // console.log(this);
       this.text = event.target.value;
-      console.log('in handleChangeText', this.text)
+      // console.log('in handleChangeText', this.text)
   }
 
   renderReadable() {
