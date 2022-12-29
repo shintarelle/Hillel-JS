@@ -6,7 +6,6 @@ export default class State{
   #renderFn;
   #search = [];   //? ---- завела отдельный массив для поиска чтобы изначальный список туду не перезаписывать
 
-
   static instance;
   static getInstance() {
     if (!State.instance) {
@@ -18,29 +17,6 @@ export default class State{
   constructor() {
     this.#state = [];
     this.setState();
-    //   [{
-    //     text: '1 milk',
-    //     checked: false,
-    //     editable: false,
-    //     id: new Date()+0,
-    //   },
-    // {
-    //     text: '2 massage',
-    //     checked: false,
-    //     editable: true,
-    //     id: new Date()+1,
-    //   },{
-    //     text: '3 mochko',
-    //     checked: true,
-    //     editable: false,
-    //     id: new Date()+2,
-    //   },{
-      //   text: '4 murder',
-      //   checked: true,
-      //   editable: true,
-      //   id: new Date()+3,
-      // }];
-
   }
 
   async setState() {

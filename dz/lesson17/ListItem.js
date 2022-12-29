@@ -2,8 +2,6 @@ import State from './State.js';
 
 class ListItem {        //красная рамка, наши li
   constructor(obj) {
-    // console.log('obj in ListItem', obj);
-
 
     this.text = obj.text;
     this.checked = obj.checked;
@@ -11,7 +9,6 @@ class ListItem {        //красная рамка, наши li
     this.id = obj.id;
 
     this.state = State.getInstance();
-    // console.log('state in ListItem', this.state);
 
     this.checkedToDoItem = this.checkedToDoItem.bind(this);
     this.editToDoItem = this.editToDoItem.bind(this);
@@ -38,11 +35,7 @@ class ListItem {        //красная рамка, наши li
   saveToDoItem() {
     const item = this.state.findByID(this.id);
 
-    // console.log(item)
-    // console.log(this.text)
-
     this.state.updateElement(this.id, { ...item, text: this.text, editable: false });
-    // console.log(this.state.findByID(this.id))
   }
 
   cancel() {
@@ -51,9 +44,7 @@ class ListItem {        //красная рамка, наши li
   }
 
   handleChangeText(event) {
-    // console.log(this);
       this.text = event.target.value;
-      // console.log('in handleChangeText', this.text)
   }
 
   renderReadable() {

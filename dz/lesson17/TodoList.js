@@ -20,7 +20,6 @@ class TodoList {    //зеленая рамка, общее наше прило�
 
   constructor (id) {
     this.id = id;
-    // this.state = State.getInstance(this.render.bind(this));
   }
 
   setState(state) {

@@ -1,8 +1,6 @@
 import List from './List.js';
 import State from './State.js';
 
-
-const userId = 1;
 class Controller {     //синяя рамка, то что управляет нашими тудушками
 
   inputRef;
@@ -26,16 +24,6 @@ class Controller {     //синяя рамка, то что управляет �
         editable: false,
         id: new Date(),
       })
-
-      // const data = await createTodo(inputRef.value);
-
-      // if(!data){
-      //   return
-      // }
-
-      // state.push(cookedData(data))
-      // renderLi();
-
       this.inputRef.value = '';
     }
   }
@@ -53,6 +41,9 @@ class Controller {     //синяя рамка, то что управляет �
 
   updateList() {
     this.state.getSearch().length = 0
+    const items = this.state.getState().map(s => s);
+    items.map(elem => this.state.deleteElement(elem.id))
+    items.map(elem => this.state.addElement(elem))
     this.render()
   }
 

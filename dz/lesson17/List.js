@@ -6,11 +6,6 @@ class List {         //голубая рамка, наша ul
     this.state = State.getInstance();
   }
 
-  // clearAll() {
-  //   toDoList.innerHTML = '';
-  //   this.render();
-  // }
-
   render1() {
     const toDoList = document.createElement('ul');
     const items = this.state.getState().map(s => new ListItem(s, this.state));
