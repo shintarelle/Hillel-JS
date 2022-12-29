@@ -1,10 +1,10 @@
-import Server from "./TodoServer";
+import ServerTodo from "./ServerTodo.js";
 const userId = 1;
 export default class State{
 
   #state;
   #renderFn;
-  #search = [];
+  #search = [];   //? ---- завела отдельный массив для поиска чтобы изначальный список туду не перезаписывать
 
 
   static instance;
@@ -16,8 +16,8 @@ export default class State{
   }
 
   constructor() {
+    this.#state = [];
     this.setState();
-    // this.#state = [];
     //   [{
     //     text: '1 milk',
     //     checked: false,
@@ -42,44 +42,42 @@ export default class State{
       // }];
 
   }
-  setState() {
-    console.log('here')
-    // const responce = this.getToDo();
-    this.#state = [];
+
+  async setState() {
+    const responce = await ServerTodo.getToDo();
+    this.#state = responce;
     this.rerender();
   }
 
-//   getToDo () {
-//     fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
-//     .then((response) => response.json())
-//     .then((json) => json.map(this.cookedData))
-//     .then((mappedData) => mappedData.map(elem => this.state.addElement(elem)))
-//     .catch(e => alert(e.message));
-// };
-
-  addElement(item) {
-    this.#state.push(item);
+  async addElement(item) {  //! проверь пожалуйста работу с сервером, меня смущает что я не работаю с ответами сервера
+    const responce = await ServerTodo.createTodo(item.text)
+    console.log(responce)
+    this.#state.push(item);   // this.#state.push(responce) не работает ибо placeholder не дает менять
     this.rerender();
   }
+
   addSearch(item) {
     this.#search.push(item);
     this.rerender();
   }
 
   deleteElement(id) {
+    ServerTodo.deleteTodo(id)
     const idx = this.findIndexByID(id);
     this.#state.splice(idx, 1)
     this.rerender();
   }
 
-  deleteSearch(id) {
+  deleteSearch(id) {    // удаление массива данных поиска
     const idx = this.findIndexByID(id);
     this.#search.splice(idx, 1)
     this.rerender();
   }
 
-  updateElement(id, item) {
-    const idx = this.findIndexByID(id);
+  async updateElement(id, item) {    //! аналогично не дает обновлять
+    const responce = await ServerTodo.updateData(id, item)
+    console.log(responce)
+    const idx = this.findIndexByID(id);  //const idx = this.findIndexByID(responce.id) не работает
     this.#state[idx] = item;
     this.rerender();
   }
@@ -95,7 +93,7 @@ export default class State{
   getState() {
     return this.#state;
   }
-  getSearch() {
+  getSearch() {   // получение массива данных поиска
     return this.#search
   }
 

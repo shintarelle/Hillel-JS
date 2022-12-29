@@ -249,7 +249,6 @@ getInitialData();
 
 
 function updateData(id, data) {
-
     fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -262,7 +261,6 @@ function updateData(id, data) {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then(data => {
-      // console.log(data)
       if(!data.ok){
         throw new Error(data.status);
       }

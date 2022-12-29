@@ -53,21 +53,8 @@ class Controller {     //синяя рамка, то что управляет �
 
   updateList() {
     this.state.getSearch().length = 0
-    this.getInitialData()
     this.render()
   }
-
-  cookedData (item) {
-    return {text: item.title, checked: item.completed, id: item.id,editable: false}
-  }
-
-  getInitialData () {
-  fetch(`https://jsonplaceholder.typicode.com/users/${userId}/todos`)
-  .then((response) => response.json())
-  .then((json) => json.map(this.cookedData))
-  .then((mappedData) => mappedData.map(elem => this.state.addElement(elem)))
-  .catch(e => alert(e.message));
-};
 
   sortByMin() {
     const items = this.state.getState().map(s => s);
