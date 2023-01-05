@@ -1,21 +1,23 @@
-import { Component } from "react";
+// import logo from './logo.svg';
+import './App.css';
 
-class App extends Component {
-  constructor() {
-    super();
+import Header from './Header';
 
-  }
+import Main from './Main';
 
-  render() {
+// Приложение должно состоять из трёх блоков:
+// хедер
+// левая боковая навигация
+// центральный контейнер
+// Контент внутри блоков произвольный
 
-    return (
-      <>
-
-      </>
-    )
-  }
-
-
+function App() {
+  return (
+    <div className="MyApp">
+      <Header />
+      <Main />
+    </div>
+  );
 }
 
 export default App;
