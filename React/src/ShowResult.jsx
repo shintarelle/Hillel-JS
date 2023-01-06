@@ -8,7 +8,6 @@ class ShowResult extends Component {
 
   handleShowResult(){
     this.props.showResult()
-    console.log('this.props.winner', this.props.winner)
   };
 
   render() {

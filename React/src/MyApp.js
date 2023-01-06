@@ -15,54 +15,42 @@ class MyApp extends Component {
     this.choiseSmile = this.choiseSmile.bind(this)
     this.showResult = this.showResult.bind(this)
     this.state = {
-      smile1: 0,
-      smile2: 0,
-      smile3: 0,
-      smile4: 0,
-      smile5: 0,
-      winner: '',
-      // isShowResult: false,
-
+      smile: [{ key: 1, value: 0 }, { key: 2, value: 0 }, {key: 3, value: 0 }, {key: 4, value: 0 }, {key: 5, value: 0 }],
+      winner: ''
     }
   }
 
   choiseSmile(id, count) {
-    this.setState({ ...this.state, [id]: count });
+    const idx = this.state.smile.findIndex(item => item.key === id)
+    const newArr = {...this.state}
+    newArr.smile.splice(idx,1, {key: id, value: count})
+    this.setState({...newArr})
   }
 
   showResult() {
-    console.log('state in showresult', this.state)
-    const arr = Object.values(this.state);
+    const array = this.state.smile.map((item) => item.value)
+    const maxElem = Math.max(...array)
+    const idx = this.state.smile.findIndex((item) => item.value == maxElem)
 
-    const maxElem = Math.max(...arr)
-    const idx = arr.findIndex((element) => element === maxElem)
-
-    const keys = Object.keys(this.state);
-
-    let win = keys[idx];
     if (maxElem !== 0) {
-      this.setState({ ...this.state, winner: win })
+      this.setState({ ...this.state, winner: `smile${idx+1}` })
     }
-
-    console.log(this.state)
-    // this.setState({ ...this.state, isShowResult: true })
-
   }
 
+
+
   render() {
-    // console.log('state in render', this.state)
     return (
       <div className="myApp">
         <div className='container'>
-          <Smile imageSrc='./image/1.png' id='smile1' count={this.state.smile1} choiseSmile={this.choiseSmile} winner={this.state.winner} />
-          <Smile imageSrc='./image/2.jpeg' id='smile2' count={this.state.smile2} choiseSmile={this.choiseSmile} winner={this.state.winner} />
-          <Smile imageSrc='./image/3.jpeg' id='smile3' count={this.state.smile3} choiseSmile={this.choiseSmile} winner={this.state.winner} />
-          <Smile imageSrc='./image/4.jpeg' id='smile4' count={this.state.smile4} choiseSmile={this.choiseSmile} winner={this.state.winner} />
-          <Smile imageSrc='./image/5.jpeg' id='smile5' count={this.state.smile5} choiseSmile={this.choiseSmile} winner={this.state.winner} />
+
+          {this.state.smile.map(item => {
+            return (<Smile key={ item.key} imageSrc={`./image/${item.key}.jpeg`}  name={`smile${item.key}`} id={item.key} count={item.value} choiseSmile={this.choiseSmile} winner={this.state.winner} />)
+          })}
 
         </div>
-        <ShowResult showResult={this.showResult} winner={this.state.winner} />
-        <span></span>
+          <ShowResult showResult={this.showResult} winner={this.state.winner} />
+          <span></span>
       </div>
     );
   }
